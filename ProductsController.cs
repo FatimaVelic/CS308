@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -14,11 +15,7 @@ namespace WebAppProject1.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ProductsController ()
-        {
-            
-        }
-
+       
         // GET: Products
         public ActionResult Index(string searchString, string product)
         {
@@ -50,7 +47,7 @@ namespace WebAppProject1.Controllers
             return View(products);
         }
 
-        //Sorting
+        //sorting
         public ActionResult Index3(string sortOrder)
         {
 
@@ -62,16 +59,18 @@ namespace WebAppProject1.Controllers
                            select b;
 
 
-            if (sortOrder == ("Product name")) {
-
-             products = from b in db.Products
-                           orderby b.PTitle
-                           select b ;
-            } else if (sortOrder == ("Product color"))
+            if (sortOrder == ("Product name"))
             {
-               products = from b in db.Products
-                               orderby b.PColor
-                               select b;
+
+                products = from b in db.Products
+                           orderby b.PTitle
+                           select b;
+            }
+            else if (sortOrder == ("Product color"))
+            {
+                products = from b in db.Products
+                           orderby b.PColor
+                           select b;
             }
             else if (sortOrder == ("Product size"))
             {
@@ -91,6 +90,7 @@ namespace WebAppProject1.Controllers
                            orderby b.PStatus
                            select b;
             }
+            
             else if (sortOrder == ("Product category"))
             {
                 products = from b in db.Products
@@ -98,58 +98,22 @@ namespace WebAppProject1.Controllers
                            select b;
             }
 
-            //switch(sortOrder)
-            //{
-            //    case "PTitle_desc" :
-            //            products = products.OrderByDescending(b => b.PTitle);
-            //        break;
+            return View (products.ToList());
 
-            //    case "PColor" :
-            //            products = products.OrderBy(b => b.PColor);
-            //        break;
-            //    case "PColor_desc":
-            //            products = products.OrderByDescending(b => b.PColor);
-            //        break;
-
-            //}
-
-
-            //var productsList = new List<string>();
-            // var getProducts = from m in db.Products
-            //select m.PCategory;
-
-            // productsList.AddRange(getProducts.Distinct());
-            // ViewBag.products = new SelectList(productsList);
-            //if (!string.IsNullOrEmpty(product))
-            //{
-            //products = products.Where(b => b.PTitle == searchString);
-            //}
-            //return View(db.Products.ToList());
-            return View(products);
-        }
-
-        // GET: Products/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+
+            //paging
+            public ActionResult Index4(int ? page)
             {
-                return HttpNotFound();
-            }
-            return View(product);
+                var products=from b in db.Products
+                                orderby b.PTitle
+                                    select b;
+                int pageSize = 3;
+                int pageNumber = (page ?? 1);
+            //return View(products.ToList());
+            //return View(products.(products.ToList()));
+            return View(products.ToPagedList(pageNumber, pageSize));
         }
-
-        // GET: Products/Create
-        public ActionResult Create()
-        {
-            var Product = new Product();
-            return View(Product);
-        }
-
         // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

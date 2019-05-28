@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebAppProject1.Models.Product>
+
+@{
+    ViewBag.Title = "Index3";
+}
+
+<h2>Sort products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Product name", "Index3", new {sortOrder = Convert.ToString("Product name") })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PDescription)
+        </th>
+        <th>
+          @Html.ActionLink("Product color", "Index3", new { sortOrder = Convert.ToString("Product color") })
+        </th>
+        <th>
+            @Html.ActionLink("Product size", "Index3", new { sortOrder = Convert.ToString("Product size") })
+        </th>
+        <th>
+            @Html.ActionLink("Product category", "Index3", new { sortOrder = Convert.ToString("Product category") })
+        </th>
+        <th>
+            @Html.ActionLink("Product status", "Index3", new { sortOrder = Convert.ToString("Product status") })
+        </th>
+        <th>
+            @Html.ActionLink("Product price", "Index3", new { sortOrder = Convert.ToString("Product price") })
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PColor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PCategory)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PPrice)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.ProductId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ProductId })
+        </td>
+    </tr>
+}
+
+</table>
